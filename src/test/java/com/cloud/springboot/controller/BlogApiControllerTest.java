@@ -99,4 +99,25 @@ class BlogApiControllerTest {
                 .andExpect(jsonPath("$[0].content").value(content));
     }
 
+
+    @DisplayName("view Article!")
+    @Test
+    public void findArticle () throws Exception {
+        final String url = "/api/articles/{id}";
+        final String title = "view Title";
+        final String content = "view Content";
+
+        Article article = blogRepository.save(Article.builder()
+                        .title(title)
+                        .content(content)
+                        .build());
+
+       final ResultActions resultActions = mockMvc.perform(get(url, article.getId()));
+
+       resultActions
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("$.title").value(title))
+               .andExpect(jsonPath("$.content").value(content));
+    }
+
 }
