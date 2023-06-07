@@ -42,6 +42,5 @@ public class BlogApiController {
 
         return ResponseEntity.ok()
                 .body(new ArticleResponse(article));
-
     }
 }
