@@ -108,9 +108,9 @@ class BlogApiControllerTest {
         final String content = "view Content";
 
         Article article = blogRepository.save(Article.builder()
-                        .title(title)
-                        .content(content)
-                        .build());
+                .title(title)
+                .content(content)
+                .build());
 
        final ResultActions resultActions = mockMvc.perform(get(url, article.getId()));
 
@@ -118,6 +118,27 @@ class BlogApiControllerTest {
                .andExpect(status().isOk())
                .andExpect(jsonPath("$.title").value(title))
                .andExpect(jsonPath("$.content").value(content));
+    }
+
+    @DisplayName("DELETE ARTICLE")
+    @Test
+    public void deleteArticle () throws Exception {
+        final String url = "/api/articles/{id}";
+        final String title = "delete title";
+        final String content = "delete content";
+
+        Article article = blogRepository.save(Article
+                .builder()
+                .title(title)
+                .content(content)
+                .build());
+
+        ResultActions resultActions = mockMvc.perform(get(url, article.getId()))
+                .andExpect(status().isOk());
+
+        List<Article> list = blogRepository.findAll();
+
+        assertThat(list).isEmpty();
     }
 
 }
