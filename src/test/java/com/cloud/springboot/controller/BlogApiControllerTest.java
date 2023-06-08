@@ -2,6 +2,7 @@ package com.cloud.springboot.controller;
 
 import com.cloud.springboot.domain.Article;
 import com.cloud.springboot.dto.AddArticleRequest;
+import com.cloud.springboot.dto.UpdateArticle;
 import com.cloud.springboot.repository.BlogRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -140,4 +141,32 @@ class BlogApiControllerTest {
         assertThat(list).isEmpty();
     }
 
+    @DisplayName("Update Article")
+    @Test
+    public void updateArticle() throws Exception {
+        final String url = "/api/articles/{id}";
+        final String title = "first Title";
+        final String content = "first content";
+
+        Article saved = blogRepository.save(Article.builder()
+                .title(title)
+                .content(content)
+                .build());
+
+        final String modifyTitle = "modify Title";
+        final String modifyContent = "modify Content";
+
+        UpdateArticle request = new UpdateArticle(modifyTitle, modifyContent);
+
+        ResultActions resultActions = mockMvc.perform(put(url, saved.getId())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(request)));
+
+        resultActions.andExpect(status().isOk());
+
+        Article article = blogRepository.findById(saved.getId()).get();
+
+        assertThat(article.getTitle()).isEqualTo(modifyTitle);
+        assertThat(article.getContent()).isEqualTo(modifyContent);
+    }
 }
