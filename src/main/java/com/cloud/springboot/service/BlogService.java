@@ -2,7 +2,9 @@ package com.cloud.springboot.service;
 
 import com.cloud.springboot.domain.Article;
 import com.cloud.springboot.dto.AddArticleRequest;
+import com.cloud.springboot.dto.UpdateArticle;
 import com.cloud.springboot.repository.BlogRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,5 +31,15 @@ public class BlogService {
 
     public void delete(Long id){
         blogRepository.deleteById(id);
+    }
+
+    @Transactional
+    public Article update(Long id, UpdateArticle request){
+        Article article = blogRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Not Found" + id));
+
+        article.update(request.getTitle(), request.getContent());
+
+        return article;
     }
 }

@@ -20,8 +20,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -133,7 +132,7 @@ class BlogApiControllerTest {
                 .content(content)
                 .build());
 
-        ResultActions resultActions = mockMvc.perform(get(url, article.getId()))
+        ResultActions resultActions = mockMvc.perform(delete(url, article.getId()))
                 .andExpect(status().isOk());
 
         List<Article> list = blogRepository.findAll();
