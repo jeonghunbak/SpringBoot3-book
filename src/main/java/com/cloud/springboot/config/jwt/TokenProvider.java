@@ -1,14 +1,21 @@
 package com.cloud.springboot.config.jwt;
 
 import com.cloud.springboot.domain.User;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.Duration;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Setter
@@ -43,6 +50,26 @@ public class TokenProvider {
         }catch (Exception e){
             return false;
         }
+    }
+
+    public Authentication getAuthentication(String token){
+        Claims claims = getClaims(token);
+        Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
+
+        return new UsernamePasswordAuthenticationToken(
+                new org.springframework.security.core.userdetails.User(claims.getSubject(), "", authorities), token, authorities);
+    }
+
+    public Long getUserId(String token){
+        Claims claims = getClaims(token);
+        return claims.get("id", Long.class);
+    }
+
+    private Claims getClaims(String token){
+        return Jwts.parser()
+                .setSigningKey(jwtProperties.getSecretKey())
+                .parseClaimsJws(token)
+                .getBody();
     }
 }
 
