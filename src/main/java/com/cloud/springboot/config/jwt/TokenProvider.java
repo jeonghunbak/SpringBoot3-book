@@ -10,6 +10,7 @@ import lombok.Setter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.Collection;
@@ -18,7 +19,7 @@ import java.util.Date;
 import java.util.Set;
 
 @RequiredArgsConstructor
-@Setter
+@Service
 public class TokenProvider {
 
     private final JwtProperties jwtProperties;
