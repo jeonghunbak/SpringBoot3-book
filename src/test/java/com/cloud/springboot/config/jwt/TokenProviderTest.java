@@ -47,7 +47,7 @@ public class TokenProviderTest {
         assertThat(userId).isEqualTo(testUser.getId());
     }
 
-    @DisplayName("validToken()")
+    @DisplayName("validToken")
     @Test
     void validToken_invalidToken(){
         String token = JwtFactory.builder()
@@ -60,7 +60,7 @@ public class TokenProviderTest {
         assertThat(result).isFalse();
     }
 
-    @DisplayName("validToken()")
+    @DisplayName("validToken")
     @Test
     void validToken_validToken(){
         String token = JwtFactory.withDefaultValues().createToken(jwtProperties);
@@ -70,7 +70,7 @@ public class TokenProviderTest {
         assertThat(result).isTrue();
     }
 
-    @DisplayName("getAuthentication()")
+    @DisplayName("getAuthentication")
     @Test
     void getAuthertication(){
         String email = "cloud@email.com";
