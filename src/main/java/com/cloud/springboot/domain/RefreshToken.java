@@ -15,5 +15,18 @@ public class RefreshToken {
     private Long id;
 
     @Column(name = "userId", nullable = false, updatable = true)
-    private long userId
+    private long userId;
+
+    @Column(name = "refreshToken", nullable = true)
+    private String refreshToken;
+
+    public RefreshToken(Long userId, String refreshToken){
+        this.userId = userId;
+        this.refreshToken = refreshToken;
+    }
+
+    public RefreshToken update(String newRefreshToken){
+        this.refreshToken = newRefreshToken;
+        return this;
+    }
 }
