@@ -19,4 +19,9 @@ public class UserService {
                 .email(dto.getEmail()).passwd(bCryptPasswordEncoder.encode(dto.getPasswd()))
                 .build()).getId();
     }
+
+    public User findById(Long Id){
+        return userRepository.findById(Id)
+                .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
+    }
 }
